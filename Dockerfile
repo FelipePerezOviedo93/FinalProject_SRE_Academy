@@ -1,7 +1,7 @@
 FROM python:3.10
 #EXPOSE 5000
-WORKDIR /
-COPY ./requirements.txt
+WORKDIR /app
+COPY ./requirements.txt . 
 RUN  pip install --no-cache-dir --upgrade -r /requirements.txt
-COPY ./app
-CMD ["fastapi", "run", "app/main.py", "--port", "80"]
+#COPY ./app . 
+CMD ["fastapi", "run", "main.py", "--port", "80"]
