@@ -21,3 +21,6 @@ Create a Docker Hub Account
 1. Visit https://hub.docker.com
 2. Click Sign Up and follow the instructions
 3. Confirm your email and login
+
+Start docker
+minikube start --driver=docker
