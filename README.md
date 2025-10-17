@@ -24,3 +24,7 @@ Create a Docker Hub Account
 
 Start docker
 minikube start --driver=docker
+
+
+Building the app
+docker build -t library_costarica-app .
