@@ -49,3 +49,8 @@ Configuration of otel-collector and jaeger
 ![alt text](image-16.png)
 
 
+
+Slack channel
+![alt text](image-17.png)
+
+![alt text](image-18.png)

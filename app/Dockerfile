@@ -19,5 +19,4 @@ COPY ./requirements.txt /code/requirements.txt
 RUN pip install requirements.txt
 COPY ./app /code/app
 CMD ["fastapi", "run", "app/main.py", "--port", "80"]
->>>>>>> origin/DevBranch
->>>>>>> 01d6083af2facae74b371780d996693b7d07205d
+
