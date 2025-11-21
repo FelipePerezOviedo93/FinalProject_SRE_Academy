@@ -31,13 +31,28 @@ Para realizar la ejecución de este ejercicio, se require de herramientas tales 
 * Docker
 
 
-
+---
 ### Instalaciones
 
 ## Explicacion de archivos
+
+###Deployment.yaml
+Despliega tu aplicación library-costarica-app
+Mantiene 3 réplicas siempre corriendo
+Aplica la etiqueta app: library-costarica-app
+Usa la imagen Docker:
+felipeperezo/library_costarica-app:latest
+Expone internamente el puerto 8000 (dentro del Pod)
+[Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/deployment.yaml)
+
 ### Prometheus.yaml
-* Al definir el namespace de tipo *monitoring, permitira mantener los recursos del mismo tipo aislados del resto del cluster y de forma ordenada
-* La seccion de configmap, contiene la configuracion 
+* Namespace	Crea un espacio para Prometheus y otros sistemas de monitoreo
+* ConfigMap	Define el archivo de configuración prometheus.yml
+* Deployment	Ejecuta Prometheus con esa configuración
+* Service NodePort	Te permite acceder a Prometheus desde tu PC
+[Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/prometheus.yaml)
+
+
 
 ## Crear una cuenta en Docker Hub
 1. Visite https://hub.docker.com
