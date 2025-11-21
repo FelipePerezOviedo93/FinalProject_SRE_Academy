@@ -1,5 +1,5 @@
 # FinalProject_SRE_Academy
-
+---
 ## Objetivo
 
 El objetivo de este proyecto es crear una aplicacion en el lenguaje de programación de Python, esta consiste en una Librería, donde se podrán consultar por medio de métodos, todos los libros, por autor, o por categoría.
@@ -21,6 +21,7 @@ Las características clave son:
 Swagger UI permite que cualquier persona ya sea su equipo de desarrollo o sus consumidores finales, visualice e interactúe con los recursos de la API sin tener ninguna lógica de implementación implementada. Se genera automáticamente a partir de su especificación OpenAPI (anteriormente conocida como Swagger), y la documentación visual facilita la implementación del back-end y el consumo del lado del cliente.
 Al ejecutar FASTAPI, se puede acceder yendo a /docs
 http://127.0.0.1:8000/docs
+---
 
 ## Prerequisitos
 Para realizar la ejecución de este ejercicio, se require de herramientas tales como:
@@ -30,36 +31,77 @@ Para realizar la ejecución de este ejercicio, se require de herramientas tales 
 * Grafana
 * Docker
 
+### Crear una cuenta en Docker Hub
+1. Visite https://hub.docker.com
+2. Click Sign Up y siga las instrucciones
+3. Confirme el email y haga login
+   
+---
+
+### Instalaciones
 
 ---
-### Instalaciones
 
 ## Explicacion de archivos
 
-###Deployment.yaml
-Despliega tu aplicación library-costarica-app
-Mantiene 3 réplicas siempre corriendo
-Aplica la etiqueta app: library-costarica-app
-Usa la imagen Docker:
-felipeperezo/library_costarica-app:latest
-Expone internamente el puerto 8000 (dentro del Pod)
-[Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/deployment.yaml)
+### Dockerfile
+
+* Crea un contenedor basado en Python 3.10
+* Copia dependencias y ademas las instala
+* Copia tu código
+* Expone el puerto 8000
+* Ejecuta FastAPI con Uvicorn cuando arranca el contenedor
+* [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/app/deployment.yaml)
+
+### Deployment.yaml
+
+* Despliega la aplicación library-costarica-app
+* Mantiene 3 réplicas siempre corriendo
+* Aplica la etiqueta app: library-costarica-app
+* Usa la imagen Docker:felipeperezo/library_costarica-app:latest
+* Expone internamente el puerto 8000 (dentro del Pod)
+* [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/deployment.yaml)
+
+### Service.yaml
+
+* Kubernetes busca todos los Pods con app: library-costarica-app.
+* Los agrupa bajo un solo "endpoint virtual" llamado library-costarica-app-service.
+* Expone el puerto 8000 del contenedor al Service
+* Como es NodePort, lo expone fuera del cluster en un puerto 
+* [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/service.yaml)
 
 ### Prometheus.yaml
 * Namespace	Crea un espacio para Prometheus y otros sistemas de monitoreo
 * ConfigMap	Define el archivo de configuración prometheus.yml
 * Deployment	Ejecuta Prometheus con esa configuración
 * Service NodePort	Te permite acceder a Prometheus desde tu PC
-[Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/prometheus.yaml)
+* [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/prometheus.yaml)
+
+### Grafana.yaml
+
+* Deployment	Levanta el servidor Grafana
+* Service NodePort	Lo expone en el puerto 3000 hacia tu PC
+* ConfigMap datasources	Configura Prometheus y Loki automáticamente
+* ConfigMap dashboards	Carga dashboards listos para usarse
+*  [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/grafana.yaml)
+
+### cAdvisor.yaml
+* Instala cAdvisor en todas las máquinas del clúster.
+* Expone métricas en puerto 8080.
+* Permite que Prometheus las lea.
+* Monta volúmenes del host para obtener información real del contenedor.
+* Usa un DaemonSet porque las métricas deben obtenerse de cada nodo.
+* [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/cadvisor.yaml)
+ 
+### Prometheus-rbac-cluster.yaml
+* Este archivo define los permisos (RBAC) necesarios para que Prometheus pueda descubrir y leer información del clúster Kubernetes.
+* ServiceAccount	Identidad del Pod de Prometheus
+* ClusterRole	Lista de permisos de lectura sobre el clúster
+* ClusterRoleBinding	Conecta la identidad con los permisos
+* [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/prometheus-rbac-cluster.yaml)
 
 
-
-## Crear una cuenta en Docker Hub
-1. Visite https://hub.docker.com
-2. Click Sign Up y siga las instrucciones
-3. Confirme el email y haga login
-
-
+---
 ## Configuración de la aplicación
 
 ### Iniciar docker
@@ -79,19 +121,19 @@ docker run --rm -it -p 5000:5000 felipeperezo/library_costarica-app
 kubectl apply -f deployment.yaml
 
 ### Aplicar el servicio
----------------------------------------------------------------------------------------
+
 kubectl apply -f service.yaml
 kubectl get service library-costarica-app-service
 
 ### Acceder a la aplicación the 
----------------------------------------------------------------------------------------
+
 minikube service library-costarica-app-service --url
 
----------------------------------------------------------------------------------------
+Revisar el role creado
+ kubectl get clusterrolebinding prometheus-pod-reader-binding-cluster
+ 
 Opening Grafana
----------------------------------------------------------------------------------------
 minikube service grafana-service -n monitoring
----------------------------------------------------------------------------------------
 
 Accessing Prometheus
 
