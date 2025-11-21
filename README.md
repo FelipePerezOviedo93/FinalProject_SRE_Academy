@@ -173,5 +173,43 @@ kubectl get clusterrolebinding prometheus-pod-reader-binding-cluster
 minikube service grafana-service -n monitoring
 
 * ### Acceder a Prometheus
-minikube service prometheus-service -n monitoring
+  minikube service prometheus-service -n monitoring
 ---
+
+## Explicacion del codigo
+
+Esta funcion es para desplegar la pagina principal de la aplicacion 
+`@app.get("/")
+async def index():
+    return "Bienvenido a la libreria!!"`
+
+Esta funcion desplegara todos los libros
+`@app.get("/books")
+async def read_all_books():
+    return BOOKS`
+    
+Esta funcion permite realizar una busqueda por el titulo del libro
+`@app.get("/books/{book_title}")
+async def read_bookTitle(book_title:str):
+    for book in BOOKS:
+        if book.get('nombre').casefold() == book_title.casefold():
+            return book`
+
+Esta funcion agrupara los libros por nombre de autor
+`@app.get("/books/")
+async def read_bookCategory(book_autor:str):
+    booksautor = []
+    for book in BOOKS:
+        if book.get('autor').casefold() == book_autor.casefold():
+            booksautor.append(book)
+    return booksautor`
+
+Esta funcion agrupara los libros por categoria            
+`@app.get("/books/")
+async def read_bookCategory(book_category:str):
+    bookscategory = []
+    for book in BOOKS:
+        if book.get('categoria').casefold() == book_category.casefold():
+            bookscategory.append(book)
+    return bookscategory`
+
