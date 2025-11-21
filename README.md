@@ -22,6 +22,7 @@ Las características clave son:
 Swagger UI permite que cualquier persona ya sea su equipo de desarrollo o sus consumidores finales, visualice e interactúe con los recursos de la API sin tener ninguna lógica de implementación implementada. Se genera automáticamente a partir de su especificación OpenAPI (anteriormente conocida como Swagger), y la documentación visual facilita la implementación del back-end y el consumo del lado del cliente.
 Al ejecutar FASTAPI, se puede acceder yendo a /docs
 http://127.0.0.1:8000/docs
+
 ---
 
 ## Prerequisitos
@@ -137,41 +138,40 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ---
 ## Configuración de la aplicación
 
-### Iniciar docker
+* ### Iniciar docker
 minikube start --driver=docker
 
-### Construccción de la imagen
+* ### Construccción de la imagen
 docker build -t library_costarica-app .
 docker tag library_costarica-app:latest felipeperezo/library_costarica-app:latest
 
-### Push de la imagen
+* ### Push de la imagen
 docker push felipeperezo/library_costarica-app:latest
 
-### Correr la imagen
+* ### Correr la imagen
 docker run --rm -it -p 5000:5000 felipeperezo/library_costarica-app
 
-### Aplicar un deployment
+* ### Aplicar un deployment
 kubectl apply -f deployment.yaml
 
-### Aplicar el servicio
+* ### Aplicar el servicio
 kubectl apply -f service.yaml
 
-### Listar  todos los pods
+* ### Listar  todos los pods
 kubectl get pods -A
 
-### Revisar los pods de monitoreo
+* ### Revisar los pods de monitoreo
 kubectl get pods -n monitoring
 
-
-### Acceder a la aplicación the 
+* ### Acceder a la aplicación
 minikube service library-costarica-app-service --url
 
-### Revisar el role creado
+* ### Revisar el role creado
 kubectl get clusterrolebinding prometheus-pod-reader-binding-cluster
  
-### Acceder a Grafana
+* ### Acceder a Grafana
 minikube service grafana-service -n monitoring
 
-### Acceder a Prometheus
+* ### Acceder a Prometheus
 minikube service prometheus-service -n monitoring
 ---
