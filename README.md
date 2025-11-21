@@ -18,6 +18,7 @@ Las características clave son:
 * Basado en estándares: Basado (y completamente compatible) con los estándares abiertos para APIs: OpenAPI (anteriormente conocido como Swagger) y JSON Schema.
 
 ¿Qué es Swagger UI?
+
 Swagger UI permite que cualquier persona ya sea su equipo de desarrollo o sus consumidores finales, visualice e interactúe con los recursos de la API sin tener ninguna lógica de implementación implementada. Se genera automáticamente a partir de su especificación OpenAPI (anteriormente conocida como Swagger), y la documentación visual facilita la implementación del back-end y el consumo del lado del cliente.
 Al ejecutar FASTAPI, se puede acceder yendo a /docs
 http://127.0.0.1:8000/docs
@@ -38,7 +39,40 @@ Para realizar la ejecución de este ejercicio, se require de herramientas tales 
    
 ---
 
-### Instalaciones
+## Instalaciones
+
+### Python
+* sudo apt update
+* sudo apt install -y python3 python3-pip python3-venv
+
+### Docker
+* sudo mkdir -p /etc/apt/keyrings
+* curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+* echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+* sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+### Minikube
+* curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+* sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+### Kubectl
+
+* curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+* chmod +x kubectl
+* sudo mv kubectl /usr/local/bin/
+
+## Verificacion de aplicaciones instaladas
+
+* python3 --version
+* pip3 --version
+* docker run hello-world
+* kubectl version --client
+* minikube version
+
 
 ---
 
@@ -51,7 +85,7 @@ Para realizar la ejecución de este ejercicio, se require de herramientas tales 
 * Copia tu código
 * Expone el puerto 8000
 * Ejecuta FastAPI con Uvicorn cuando arranca el contenedor
-* [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/app/deployment.yaml)
+* [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/app/Dockerfile)
 
 ### Deployment.yaml
 
@@ -100,7 +134,6 @@ Para realizar la ejecución de este ejercicio, se require de herramientas tales 
 * ClusterRoleBinding	Conecta la identidad con los permisos
 * [Ver Archivo](https://github.com/FelipePerezOviedo93/FinalProject_SRE_Academy/blob/main/prometheus-rbac-cluster.yaml)
 
-
 ---
 ## Configuración de la aplicación
 
@@ -121,22 +154,24 @@ docker run --rm -it -p 5000:5000 felipeperezo/library_costarica-app
 kubectl apply -f deployment.yaml
 
 ### Aplicar el servicio
-
 kubectl apply -f service.yaml
-kubectl get service library-costarica-app-service
+
+### Listar  todos los pods
+kubectl get pods -A
+
+### Revisar los pods de monitoreo
+kubectl get pods -n monitoring
+
 
 ### Acceder a la aplicación the 
-
 minikube service library-costarica-app-service --url
 
-Revisar el role creado
- kubectl get clusterrolebinding prometheus-pod-reader-binding-cluster
+### Revisar el role creado
+kubectl get clusterrolebinding prometheus-pod-reader-binding-cluster
  
-Opening Grafana
+### Acceder a Grafana
 minikube service grafana-service -n monitoring
 
-Accessing Prometheus
-
+### Acceder a Prometheus
 minikube service prometheus-service -n monitoring
-
- kubectl get pods -n monitoring
+---
