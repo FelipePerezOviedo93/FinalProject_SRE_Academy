@@ -178,24 +178,24 @@ minikube service grafana-service -n monitoring
 
 ## Explicacion del codigo
 
-Esta funcion es para desplegar la pagina principal de la aplicacion 
+* Esta funcion es para desplegar la pagina principal de la aplicacion 
 `@app.get("/")
 async def index():
     return "Bienvenido a la libreria!!"`
 
-Esta funcion desplegara todos los libros
+* Esta función desplegara todos los libros
 `@app.get("/books")
 async def read_all_books():
     return BOOKS`
     
-Esta funcion permite realizar una busqueda por el titulo del libro
+* Esta función permite realizar una busqueda por el título del libro
 `@app.get("/books/{book_title}")
 async def read_bookTitle(book_title:str):
     for book in BOOKS:
         if book.get('nombre').casefold() == book_title.casefold():
             return book`
 
-Esta funcion agrupara los libros por nombre de autor
+* Esta función agrupara los libros por nombre de autor
 `@app.get("/books/")
 async def read_bookCategory(book_autor:str):
     booksautor = []
@@ -204,7 +204,7 @@ async def read_bookCategory(book_autor:str):
             booksautor.append(book)
     return booksautor`
 
-Esta funcion agrupara los libros por categoria            
+* Esta función agrupara los libros por categoria            
 `@app.get("/books/")
 async def read_bookCategory(book_category:str):
     bookscategory = []
