@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: cadvisor
+  namespace: monitoring
   labels:
     app: cadvisor
 spec:
@@ -13,6 +14,12 @@ spec:
       labels:
         app: cadvisor
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+
+      tolerations:
+        - operator: Exists
+
       containers:
       - name: cadvisor
         image: gcr.io/cadvisor/cadvisor:v0.47.0
@@ -54,3 +61,4 @@ spec:
       - name: docker
         hostPath:
           path: /var/lib/docker
+
