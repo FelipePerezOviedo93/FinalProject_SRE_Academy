@@ -51,3 +51,7 @@ Grafana scraping
 
 Lectura de libros, por medio de swagger
 <img width="2477" height="1118" alt="FastAPI docs site" src="https://github.com/user-attachments/assets/1810c612-2822-4638-a77f-1cae269d478b" />
+
+Ejemplo de lectura de un libro
+<img width="2157" height="1330" alt="Reading a book by title" src="https://github.com/user-attachments/assets/d5c2dd7a-48ff-4fe0-a6b4-673e3b744658" />
+
